@@ -1,7 +1,6 @@
 package com.codigo.msexamenexp.controller;
 
 
-import com.codigo.libreriaCodigo.config.RedisService;
 import com.codigo.msexamenexp.aggregates.request.RequestEnterprises;
 import com.codigo.msexamenexp.aggregates.response.ResponseBase;
 import com.codigo.msexamenexp.service.EnterprisesService;
@@ -12,13 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/enterprises")
 public class EnterprisesController {
 
-    private final RedisService redisService;
     private final EnterprisesService enterprisesService;
 
-    public EnterprisesController(RedisService redisService, EnterprisesService enterprisesService) {
-        this.redisService = redisService;
+    public EnterprisesController(EnterprisesService enterprisesService) {
         this.enterprisesService = enterprisesService;
     }
+
 
     @PostMapping
     public ResponseBase createEnterprise(@RequestBody RequestEnterprises requestEnterprises){

@@ -1,6 +1,6 @@
 package com.codigo.msexamenexp.service.impl;
 
-import com.codigo.libreriaCodigo.config.RedisService;
+import com.codigo.libreriacodigo.config.RedisService;
 import com.codigo.msexamenexp.aggregates.constants.Constants;
 import com.codigo.msexamenexp.aggregates.request.RequestEnterprises;
 import com.codigo.msexamenexp.aggregates.response.ResponseBase;

@@ -1,6 +1,6 @@
 package com.codigo.msexamenexp.service.impl;
 
-import com.codigo.libreriaCodigo.config.RedisService;
+import com.codigo.libreriacodigo.config.RedisService;
 import com.codigo.msexamenexp.aggregates.request.RequestEnterprises;
 import com.codigo.msexamenexp.aggregates.response.ResponseBase;
 import com.codigo.msexamenexp.aggregates.constants.Constants;
@@ -27,8 +27,8 @@ public class EnterprisesServiceImpl implements EnterprisesService {
     private final EnterprisesValidations enterprisesValidations;
     private final DocumentsTypeRepository typeRepository;
     private final SunatClient sunatClient;
-
     private final RedisService redisService;
+
 
     @Value("${token.api.sunat}")
     private String tokenSunat;
@@ -58,7 +58,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
 
     @Override
     public ResponseBase findOneEnterprise(String doc) {
-        String redisCache = redisService.getValueByKey(Constants.REDIS_KEY_INFO_SUNAT+doc);
+        String redisCache = redisService.getValueFromCache(Constants.REDIS_KEY_INFO_SUNAT+doc);
         if(redisCache!= null){
             EnterprisesEntity entity = Util.convertFromJson(redisCache,EnterprisesEntity.class);
             return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS, Optional.of(entity));
@@ -66,7 +66,7 @@ public class EnterprisesServiceImpl implements EnterprisesService {
             EnterprisesEntity enterprisesEntity = enterprisesRepository.findByNumDocument(doc);
             if(enterprisesEntity != null){
                 String redisData = Util.convertToJsonEntity(enterprisesEntity);
-                redisService.saveKeyValue(Constants.REDIS_KEY_INFO_SUNAT+doc,redisData,Integer.valueOf(timeExpirationSunatInfo));
+                redisService.saveInCache(Constants.REDIS_KEY_INFO_SUNAT+doc,redisData,Integer.valueOf(timeExpirationSunatInfo));
                 return new ResponseBase(Constants.CODE_SUCCESS,Constants.MESS_SUCCESS, Optional.of(enterprisesEntity));
 
             }else{
